@@ -1,0 +1,393 @@
+type UserProfile = 
+ record {
+   createdAt: Timestamp;
+   email: text;
+   id: UserId;
+   name: text;
+   role: Role;
+   teamId: opt nat;
+ };
+type UserId = principal;
+type Timestamp = int;
+type Team = 
+ record {
+   categoryId: opt nat;
+   createdAt: Timestamp;
+   description: text;
+   headId: opt UserId;
+   id: nat;
+   isActive: bool;
+   name: text;
+ };
+type StudentStatus = 
+ variant {
+   active;
+   completed;
+   inactive;
+ };
+type Student = 
+ record {
+   assignedCounselor: opt UserId;
+   courseId: nat;
+   email: text;
+   enrolledAt: Timestamp;
+   id: nat;
+   leadId: opt nat;
+   name: text;
+   paidAmount: nat;
+   paymentType: PaymentType;
+   phone: text;
+   status: StudentStatus;
+   teamId: opt nat;
+   totalFee: nat;
+ };
+type Role = 
+ variant {
+   accountant;
+   admin;
+   counselor;
+   teamHead;
+ };
+type RevenueReport = 
+ record {
+   confirmedPayments: vec Payment;
+   emiRevenue: nat;
+   fullPayRevenue: nat;
+   totalRevenue: nat;
+ };
+type Result_9 = 
+ variant {
+   err: text;
+   ok: EmiInstallment;
+ };
+type Result_8 = 
+ variant {
+   err: text;
+   ok: bool;
+ };
+type Result_7 = 
+ variant {
+   err: text;
+   ok: Course;
+ };
+type Result_6 = 
+ variant {
+   err: text;
+   ok: CourseCategory;
+ };
+type Result_5 = 
+ variant {
+   err: text;
+   ok: FollowUp;
+ };
+type Result_4 = 
+ variant {
+   err: text;
+   ok: Lead;
+ };
+type Result_3 = 
+ variant {
+   err: text;
+   ok: AppSettings;
+ };
+type Result_2 = 
+ variant {
+   err: text;
+   ok: Student;
+ };
+type Result_12 = 
+ variant {
+   err: text;
+   ok: Reminder;
+ };
+type Result_11 = 
+ variant {
+   err: text;
+   ok: Payment;
+ };
+type Result_10 = 
+ variant {
+   err: text;
+   ok: text;
+ };
+type Result_1 = 
+ variant {
+   err: text;
+   ok: Team;
+ };
+type Result = 
+ variant {
+   err: text;
+   ok: UserProfile;
+ };
+type ReminderTargetType = 
+ variant {
+   emi;
+   followUp;
+   payment;
+ };
+type ReminderStatus = 
+ variant {
+   failed;
+   pending;
+   sent;
+ };
+type ReminderRecipientType = 
+ variant {
+   admin;
+   all;
+   counselor;
+   student;
+   teamHead;
+ };
+type Reminder = 
+ record {
+   id: nat;
+   message: text;
+   recipientType: ReminderRecipientType;
+   scheduledAt: Timestamp;
+   sentAt: opt Timestamp;
+   status: ReminderStatus;
+   targetId: nat;
+   targetType: ReminderTargetType;
+ };
+type Receipt = 
+ record {
+   amount: nat;
+   generatedAt: Timestamp;
+   generatedBy: UserId;
+   id: nat;
+   paymentId: nat;
+   receiptNumber: text;
+   studentId: nat;
+ };
+type PaymentType = 
+ variant {
+   emi;
+   full;
+ };
+type PaymentStatus = 
+ variant {
+   confirmed;
+   pending;
+   rejected;
+ };
+type PaymentMethod = 
+ variant {
+   bankTransfer;
+   cash;
+   online;
+ };
+type Payment = 
+ record {
+   amount: nat;
+   confirmedAt: opt Timestamp;
+   confirmedBy: opt UserId;
+   createdAt: Timestamp;
+   createdBy: UserId;
+   id: nat;
+   method: PaymentMethod;
+   paymentLink: opt text;
+   status: PaymentStatus;
+   studentId: nat;
+   transactionId: opt text;
+ };
+type LeadStatus = 
+ variant {
+   converted;
+   dropped;
+   followUp;
+   new;
+ };
+type LeadReport = 
+ record {
+   byStatus: vec record {
+                   text;
+                   nat;
+                 };
+   converted: nat;
+   dropped: nat;
+   totalLeads: nat;
+ };
+type Lead = 
+ record {
+   assignedTo: opt UserId;
+   courseId: nat;
+   createdAt: Timestamp;
+   createdBy: UserId;
+   email: text;
+   id: nat;
+   name: text;
+   notes: text;
+   phone: text;
+   source: text;
+   status: LeadStatus;
+   teamId: opt nat;
+   updatedAt: Timestamp;
+ };
+type FollowUp = 
+ record {
+   createdAt: Timestamp;
+   createdBy: UserId;
+   id: nat;
+   leadId: nat;
+   nextFollowUpDate: Timestamp;
+   notes: text;
+   reminderDate: opt Timestamp;
+ };
+type EmiStatus = 
+ variant {
+   overdue;
+   paid;
+   pending;
+ };
+type EmiReport = 
+ record {
+   overdue: nat;
+   overdueAmount: nat;
+   paid: nat;
+   pending: nat;
+   totalInstallments: nat;
+ };
+type EmiInstallment = 
+ record {
+   amount: nat;
+   dueDate: Timestamp;
+   id: nat;
+   installmentNumber: nat;
+   paidDate: opt Timestamp;
+   paymentId: opt nat;
+   status: EmiStatus;
+   studentId: nat;
+ };
+type DashboardStats = 
+ record {
+   convertedStudents: nat;
+   overduePayments: nat;
+   pendingEmi: nat;
+   recentActivities: vec ActivityLog;
+   totalLeads: nat;
+   totalRevenue: nat;
+   upcomingEmi: vec EmiInstallment;
+   upcomingFollowUps: vec FollowUp;
+ };
+type CourseCategory = 
+ record {
+   createdBy: UserId;
+   description: text;
+   id: nat;
+   name: text;
+ };
+type Course = 
+ record {
+   categoryId: nat;
+   description: text;
+   duration: text;
+   emiOptions: vec nat;
+   id: nat;
+   isActive: bool;
+   name: text;
+   totalFee: nat;
+ };
+type AppSettings = 
+ record {
+   companyEmail: text;
+   companyName: text;
+   companyPhone: text;
+   logoUrl: text;
+   paymentBaseUrl: text;
+   smsApiKey: text;
+   smtpHost: text;
+   smtpPort: nat;
+   smtpUser: text;
+   whatsappApiKey: text;
+ };
+type ActivityLog = 
+ record {
+   action: text;
+   details: text;
+   entityId: opt nat;
+   entityType: text;
+   id: nat;
+   timestamp: Timestamp;
+   userId: UserId;
+ };
+service : {
+  addCourse: (name: text, categoryId: nat, totalFee: nat, duration: text,
+   emiOptions: vec nat, description: text) -> (Result_7);
+  addCourseCategory: (name: text, description: text) -> (Result_6);
+  addFollowUp: (leadId: nat, notes: text, nextFollowUpDate: Timestamp,
+   reminderDate: opt Timestamp) -> (Result_5);
+  addLead: (name: text, email: text, phone: text, courseId: nat, source:
+   text, notes: text) -> (Result_4);
+  addPayment: (studentId: nat, amount: nat, method: PaymentMethod,
+   transactionId: opt text) -> (Result_11);
+  addReminder: (targetType: ReminderTargetType, targetId: nat, message: 
+   text, scheduledAt: Timestamp) -> (Result_12);
+  addTeam: (name: text, categoryId: opt nat, description: text) -> (Result_1);
+  assignCourse: (studentId: nat, courseId: nat) -> (Result_2);
+  assignLead: (leadId: nat, teamId: nat, counselorId: principal) ->
+   (Result_4);
+  assignTeamHead: (teamId: nat, headId: principal) -> (Result_1);
+  confirmPayment: (paymentId: nat) -> (Result_11);
+  convertLeadToStudent: (leadId: nat, paymentType: PaymentType, emiMonths:
+   opt nat) -> (Result_2);
+  deleteCourse: (id: nat) -> (Result_8);
+  deleteCourseCategory: (id: nat) -> (Result_8);
+  deleteFollowUp: (id: nat) -> (Result_8);
+  deleteLead: (id: nat) -> (Result_8);
+  deletePayment: (id: nat) -> (Result_8);
+  deleteReminder: (id: nat) -> (Result_8);
+  deleteStudent: (id: nat) -> (Result_8);
+  deleteTeam: (id: nat) -> (Result_8);
+  deleteUser: (userId: principal) -> (Result_8);
+  generatePaymentLink: (studentId: nat, amount: nat) -> (Result_10);
+  getActivityLogs: (limit: opt nat, offset: opt nat) ->
+   (vec ActivityLog) query;
+  getAllUsers: () -> (vec UserProfile) query;
+  getCourse: (id: nat) -> (opt Course) query;
+  getCourseCategories: () -> (vec CourseCategory) query;
+  getCourses: () -> (vec Course) query;
+  getDashboardStats: () -> (DashboardStats) query;
+  getEmiInstallments: (studentId: opt nat) -> (vec EmiInstallment) query;
+  getEmiReport: (fromDate: Timestamp, toDate: Timestamp) -> (EmiReport) query;
+  getFollowUps: (leadId: opt nat) -> (vec FollowUp) query;
+  getLead: (id: nat) -> (opt Lead) query;
+  getLeadReport: (fromDate: Timestamp, toDate: Timestamp) ->
+   (LeadReport) query;
+  getLeads: () -> (vec Lead) query;
+  getPayment: (id: nat) -> (opt Payment) query;
+  getPayments: (studentId: opt nat) -> (vec Payment) query;
+  getReceipt: (id: nat) -> (opt Receipt) query;
+  getReceipts: (studentId: opt nat) -> (vec Receipt) query;
+  getReminders: () -> (vec Reminder) query;
+  getRevenueReport: (fromDate: Timestamp, toDate: Timestamp) ->
+   (RevenueReport) query;
+  getSettings: () -> (AppSettings) query;
+  getStudent: (id: nat) -> (opt Student) query;
+  getStudents: () -> (vec Student) query;
+  getTeam: (id: nat) -> (opt Team) query;
+  getTeams: () -> (vec Team) query;
+  getUserProfile: () -> (opt UserProfile) query;
+  markEmiPaid: (installmentId: nat, paymentId: opt nat) -> (Result_9);
+  sendEmiReminder: (installmentId: nat) -> (Result_8);
+  setUserProfile: (name: text, email: text) -> (Result);
+  transferLead: (leadId: nat, newTeamId: nat, newCounselorId: principal) ->
+   (Result_4);
+  updateCourse: (id: nat, name: text, categoryId: nat, totalFee: nat,
+   duration: text, emiOptions: vec nat, description: text, isActive: 
+   bool) -> (Result_7);
+  updateCourseCategory: (id: nat, name: text, description: text) ->
+   (Result_6);
+  updateFollowUp: (id: nat, notes: text, nextFollowUpDate: Timestamp,
+   reminderDate: opt Timestamp) -> (Result_5);
+  updateLead: (id: nat, name: text, email: text, phone: text, courseId: 
+   nat, source: text, notes: text) -> (Result_4);
+  updateLeadStatus: (leadId: nat, status: LeadStatus) -> (Result_4);
+  updateSettings: (settings: AppSettings) -> (Result_3);
+  updateStudent: (id: nat, name: text, email: text, phone: text) ->
+   (Result_2);
+  updateTeam: (id: nat, name: text, categoryId: opt nat, headId:
+   opt principal, description: text) -> (Result_1);
+  updateUserRole: (userId: principal, role: Role) -> (Result);
+}

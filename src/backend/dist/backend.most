@@ -1,0 +1,248 @@
+// Version: 1.0.0
+type ActivityLog__1048312172 =
+  {
+    action : Text;
+    details : Text;
+    entityId : ?Nat;
+    entityType : Text;
+    id : Nat;
+    timestamp : Timestamp__301639476;
+    userId : UserId__158757552
+  };
+type AppSettings__1020359325 =
+  {
+    companyEmail : Text;
+    companyName : Text;
+    companyPhone : Text;
+    logoUrl : Text;
+    paymentBaseUrl : Text;
+    smsApiKey : Text;
+    smtpHost : Text;
+    smtpPort : Nat;
+    smtpUser : Text;
+    whatsappApiKey : Text
+  };
+type CourseCategory__334121426 =
+  {createdBy : UserId__158757552; description : Text; id : Nat; name : Text};
+type Course__901072021 =
+  {
+    categoryId : Nat;
+    description : Text;
+    duration : Text;
+    emiOptions : [Nat];
+    id : Nat;
+    isActive : Bool;
+    name : Text;
+    totalFee : Nat
+  };
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type EmiInstallment__530885462 =
+  {
+    amount : Nat;
+    dueDate : Timestamp__301639476;
+    id : Nat;
+    installmentNumber : Nat;
+    paidDate : ?Timestamp__301639476;
+    paymentId : ?Nat;
+    status : EmiStatus__472667972;
+    studentId : Nat
+  };
+type EmiStatus__472667972 = {#overdue; #paid; #pending};
+type FollowUp__159943498 =
+  {
+    createdAt : Timestamp__301639476;
+    createdBy : UserId__158757552;
+    id : Nat;
+    leadId : Nat;
+    nextFollowUpDate : Timestamp__301639476;
+    notes : Text;
+    reminderDate : ?Timestamp__301639476
+  };
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type LeadStatus__425905407 = {#converted; #dropped; #followUp; #new};
+type Lead__109578881 =
+  {
+    assignedTo : ?UserId__158757552;
+    courseId : Nat;
+    createdAt : Timestamp__301639476;
+    createdBy : UserId__158757552;
+    email : Text;
+    id : Nat;
+    name : Text;
+    notes : Text;
+    phone : Text;
+    source : Text;
+    status : LeadStatus__425905407;
+    teamId : ?Nat;
+    updatedAt : Timestamp__301639476
+  };
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type PaymentMethod__46913440 = {#bankTransfer; #cash; #online};
+type PaymentStatus__1050999476 = {#confirmed; #pending; #rejected};
+type PaymentType__668863806 = {#emi; #full};
+type Payment__674851204 =
+  {
+    amount : Nat;
+    confirmedAt : ?Timestamp__301639476;
+    confirmedBy : ?UserId__158757552;
+    createdAt : Timestamp__301639476;
+    createdBy : UserId__158757552;
+    id : Nat;
+    method : PaymentMethod__46913440;
+    paymentLink : ?Text;
+    status : PaymentStatus__1050999476;
+    studentId : Nat;
+    transactionId : ?Text
+  };
+type Receipt__578156519 =
+  {
+    amount : Nat;
+    generatedAt : Timestamp__301639476;
+    generatedBy : UserId__158757552;
+    id : Nat;
+    paymentId : Nat;
+    receiptNumber : Text;
+    studentId : Nat
+  };
+type ReminderRecipientType__1063970214 =
+  {#admin; #all; #counselor; #student; #teamHead};
+type ReminderStatus__134673562 = {#failed; #pending; #sent};
+type ReminderTargetType__29220733 = {#emi; #followUp; #payment};
+type Reminder__490126516 =
+  {
+    id : Nat;
+    message : Text;
+    recipientType : ReminderRecipientType__1063970214;
+    scheduledAt : Timestamp__301639476;
+    sentAt : ?Timestamp__301639476;
+    status : ReminderStatus__134673562;
+    targetId : Nat;
+    targetType : ReminderTargetType__29220733
+  };
+type Role__300349085 = {#accountant; #admin; #counselor; #teamHead};
+type StudentStatus__584564141 = {#active; #completed; #inactive};
+type Student__145946388 =
+  {
+    assignedCounselor : ?UserId__158757552;
+    courseId : Nat;
+    email : Text;
+    enrolledAt : Timestamp__301639476;
+    id : Nat;
+    leadId : ?Nat;
+    name : Text;
+    paidAmount : Nat;
+    paymentType : PaymentType__668863806;
+    phone : Text;
+    status : StudentStatus__584564141;
+    teamId : ?Nat;
+    totalFee : Nat
+  };
+type Team__202203383 =
+  {
+    categoryId : ?Nat;
+    createdAt : Timestamp__301639476;
+    description : Text;
+    headId : ?UserId__158757552;
+    id : Nat;
+    isActive : Bool;
+    name : Text
+  };
+type Timestamp__301639476 = Int;
+type UserId__158757552 = Principal;
+type UserProfile__129828592 =
+  {
+    createdAt : Timestamp__301639476;
+    email : Text;
+    id : UserId__158757552;
+    name : Text;
+    role : Role__300349085;
+    teamId : ?Nat
+  };
+actor {
+  stable categories :
+    {
+      var root : Node__46230540<Nat, CourseCategory__334121426>;
+      var size : Nat__490723111
+    };
+  stable courses :
+    {
+      var root : Node__46230540<Nat, Course__901072021>;
+      var size : Nat__490723111
+    };
+  stable emis :
+    {
+      var root : Node__46230540<Nat, EmiInstallment__530885462>;
+      var size : Nat__490723111
+    };
+  stable followUps :
+    {
+      var root : Node__46230540<Nat, FollowUp__159943498>;
+      var size : Nat__490723111
+    };
+  stable leads :
+    {
+      var root : Node__46230540<Nat, Lead__109578881>;
+      var size : Nat__490723111
+    };
+  stable logs :
+    {
+      var root : Node__46230540<Nat, ActivityLog__1048312172>;
+      var size : Nat__490723111
+    };
+  stable payments :
+    {
+      var root : Node__46230540<Nat, Payment__674851204>;
+      var size : Nat__490723111
+    };
+  stable receipts :
+    {
+      var root : Node__46230540<Nat, Receipt__578156519>;
+      var size : Nat__490723111
+    };
+  stable reminders :
+    {
+      var root : Node__46230540<Nat, Reminder__490126516>;
+      var size : Nat__490723111
+    };
+  stable settingsStore :
+    {
+      var root : Node__46230540<Text, AppSettings__1020359325>;
+      var size : Nat__490723111
+    };
+  stable state :
+    {
+      var nextCategoryId : Nat;
+      var nextCourseId : Nat;
+      var nextEmiId : Nat;
+      var nextFollowUpId : Nat;
+      var nextLeadId : Nat;
+      var nextLogId : Nat;
+      var nextPaymentId : Nat;
+      var nextReceiptId : Nat;
+      var nextReminderId : Nat;
+      var nextStudentId : Nat;
+      var nextTeamId : Nat;
+      var nextUserId : Nat
+    };
+  stable students :
+    {
+      var root : Node__46230540<Nat, Student__145946388>;
+      var size : Nat__490723111
+    };
+  stable teams :
+    {
+      var root : Node__46230540<Nat, Team__202203383>;
+      var size : Nat__490723111
+    };
+  stable users :
+    {
+      var root : Node__46230540<Principal, UserProfile__129828592>;
+      var size : Nat__490723111
+    }
+};

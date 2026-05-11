@@ -1,0 +1,27 @@
+{
+  "overview": "FMS Pro is a production-ready Student Fee Management CRM SaaS built for educational institutes. It manages the full lifecycle from lead capture to student enrollment, EMI tracking, payment approval, and automated reminders — with role-based access for Admin, Team Head, Counselor, and Accountant.",
+  "features": [
+    "Role-based panels for Admin, Team Head, Counselor, and Accountant",
+    "Lead management with auto-assignment to teams by course category",
+    "Lead to student conversion with full fee inheritance",
+    "EMI plan generation with automated due reminders",
+    "Payment approval workflow — Accountant verifies and generates receipts",
+    "Follow-up tracking with reminder scheduling",
+    "Revenue, Lead, and EMI reports with PDF/Excel export",
+    "Team management with round-robin lead distribution",
+    "Activity log tracking all user actions",
+    "Modern glassmorphism SaaS UI with responsive layout"
+  ],
+  "category": "crm-business-tools",
+  "tags": [
+    "crm",
+    "fee-management",
+    "education",
+    "saas",
+    "emi",
+    "payments",
+    "leads",
+    "student-management"
+  ],
+  "last_updated": "2026-05-11T12:37:27.855Z"
+}
